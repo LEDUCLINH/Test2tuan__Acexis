@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Caro</title>
+    <link rel="stylesheet" href="index.css">
+</head>
+<body>
+    <div id="win"></div>
+    <div class="caro">
+        <div data-index="00" class="cell"></div>
+        <div data-index="01" class="cell"></div>
+        <div data-index="02" class="cell"></div>
+        <div data-index="10" class="cell"></div>
+        <div data-index="11" class="cell"></div>
+        <div data-index="12" class="cell"></div>
+        <div data-index="20" class="cell"></div>
+        <div data-index="21" class="cell"></div>
+        <div data-index="22" class="cell"></div>
+        <div class="add">
+            <button>Reset</button>
+        </div>
+    </div>
+    <label for="rowcol">Nhap số hàng và số cột</label>
+    <input type="text" name="rowcol" id="rowcol">
+    <label for="numCheck">Nhập số ô liên tiếp để thằng</label>
+    <input type="text" name="numCheck" id="numCheck">
+   
+    <script>
+        const add = document.querySelector('.add');
+         const caros = document.querySelectorAll('.cell');
+         const button = document.querySelector('button')
+         const win = document.querySelector('#win');
+         let i=1;
+         let positionX = {};
+         let position0 = {};
+        function game() {
+           if (this.textContent) return;
+           if (i%2!=0) {
+            this.textContent = 'X';
+            this.style.color = 'red';
+            const row = this.dataset.index[0];
+            const col = this.dataset.index[1];
+            positionX[this.dataset.index] = 1;
+            i++;
+            if (checkRow(positionX, row, col) || checkCol(positionX, row, col) || crossLR(positionX, row, col) || crossRL(positionX, row, col))
+             {
+                win.textContent = 'X Win';
+                add.classList.add('reset');
+                button.style.display = 'block';
+             }  
+           }
+           else {
+            const row0 = this.dataset.index[0];
+            const col0 = this.dataset.index[1];
+               this.textContent = '0';
+               this.style.color = 'green';
+               position0[this.dataset.index] = 1;
+               i++;
+               if (checkRow(position0, row0, col0) || checkCol(position0, row0, col0) || crossLR(position0, row0, col0) || crossRL(position0, row0, col0))
+               {
+                win.textContent = '0 Win';
+                add.classList.add('reset');
+                button.style.display = 'block';
+             }  
+           }
+        }
+
+        function checkRow(maxtrix, row, col) {
+            let colLeft = parseInt(col) - 1;
+            let count = 1;
+            while (colLeft>=0 && maxtrix[`${row}${colLeft}`]) {
+                count++;
+                colLeft--;
+            }
+            let colRight = parseInt(col)+1;
+            while (colRight<=2 && maxtrix[`${row}${colRight}`]) {
+                count++;
+                colRight++;
+            }
+            if (count === 3)
+            return true;
+            return false;
+        }
+        //row
+        function checkRow(maxtrix, row, col) {
+            let colLeft = parseInt(col) - 1;
+            let count = 1;
+            while (colLeft>=0 && maxtrix[`${row}${colLeft}`]) {
+                count++;
+                colLeft--;
+            }
+            let colRight = parseInt(col)+1;
+            while (colRight<=2 && maxtrix[`${row}${colRight}`]) {
+                count++;
+                colRight++;
+            }
+            if (count === 3)
+            return true;
+            return false;
+        }
+        //col
+        function checkCol(maxtrix, row, col) {
+            let rowUp = parseInt(row) - 1;
+            let count = 1;
+            while (rowUp>=0 && maxtrix[`${rowUp}${col}`]) {
+                count++;
+                rowUp--;
+            }
+            let rowDown = parseInt(row)+1;
+            while (rowDown<=2 && maxtrix[`${rowDown}${col}`]) {
+                count++;
+                rowDown--;
+            }
+            if (count === 3)
+            return true;
+            return false;
+        }
+
+        // crossLR
+        function crossLR(maxtrix, row, col) {
+            let colUp = parseInt(col) - 1;
+            let rowUp = parseInt(row) - 1;
+            let count = 1;
+            while (rowUp>=0 && colUp>=0 && maxtrix[`${rowUp}${colUp}`]) {
+                count++;
+                colUp--;
+                rowUp--;
+            }
+            let colDown = parseInt(col)+1;
+            let rowDown = parseInt(row)+1;
+            while (colDown<=2 && rowDown<=2 && maxtrix[`${rowDown}${colDown}`]) {
+                count++;
+                colDown++;
+                rowDown++;
+            }
+            if (count === 3)
+            return true;
+            return false;
+        }
+        // crossRL
+        function crossRL(maxtrix, row, col) {
+            let colUp = parseInt(col) + 1;
+            let rowUp = parseInt(row) - 1;
+            let count = 1;
+            while (rowUp>=0 && colUp<=2 && maxtrix[`${rowUp}${colUp}`]) {
+                count++;
+                colUp++;
+                rowUp--;
+            }
+            let colDown = parseInt(col) - 1;
+            let rowDown = parseInt(row) + 1;
+            while (colDown>=0 && rowDown<=2 && maxtrix[`${rowDown}${colDown}`]) {
+                count++;
+                colDown--;
+                rowDown++;
+            }
+            if (count === 3)
+            return true;
+            return false;
+        }
+
+        function reset() {
+            button.style.display = 'none';
+            add.classList.remove('reset');
+            i=1;
+            position0 = {};
+            positionX = {};
+            caros.forEach(caro => {
+                caro.textContent = '';
+            })
+            game();
+        }
+         caros.forEach(caro => caro.addEventListener('click', game));     
+         button.addEventListener('click', reset);
+    </script>
+</body>
+</html>
