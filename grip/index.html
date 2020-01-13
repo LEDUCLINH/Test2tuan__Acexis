@@ -21,13 +21,14 @@
         const max = 1000;
         const min = 1;
         // tao grip
+       
         function createGrip() {
             const rows = parseInt(document.querySelector('#rows').value);
             const cols = parseInt(document.querySelector('#cols').value);
             let table = '<table>';
                 table += '<tr id="first">';
             for (let col=1; col<=cols; col++){
-                table += '<td>';
+                table += `<td id=${col-1}>`;
                 table += `${col}`;
                 table += '</td>'
             }
@@ -35,33 +36,59 @@
             for (let row=0; row<rows; row++){
                 table += `<tr data-row=${row+1}>`
              for (let col=0; col<cols; col++){
-                table += '<td>';
+                table += `<td id=${row}_${col}>`;
                 table += `${Math.round(Math.random()*(max-min))+min}`
                 table += '</td>'
              }
              table += '</tr>'
         }
-          table += '</table>'
+          table += '</table>';
+        
            grip.innerHTML = table;
            const arrRows = document.querySelectorAll('tr');    
-                for (let i=0;i<=100;i++)
+                for (let i=0;i<=100;i++){
+                 if (i>arrRows.length-1) break;
                  arrRows[i].style.opacity = '1';
+                }
         }
-        
+
         // load ifinity
         let count = 1;
         function view(e) {
             const rows = document.querySelectorAll('tr');
             if (this.scrollY>=rows[1].offsetHeight*100*count){
-                for (let j=count*100+1;j<=count*100+100;j++)
+                for (let j=count*100+1;j<=count*100+100;j++){
+                 if (j>rows.length-1) return;
                  rows[j].style.opacity = '1';
+                }
                  count++;
             }
-            console.log(count)
             
+        }
+        function sortCol() {
+            const rows = parseInt(document.querySelector('#rows').value);
+           const headers =  document.querySelector('tr[id="first"]');
+           const tdCols = headers.querySelectorAll('td');
+           tdCols.forEach(tdCol => tdCol.addEventListener('click', () => {
+               const numCol = tdCol.id;
+               const arr = [];
+            
+              for (let row=0;row<rows;row++){
+                 const find = `td[id="${row}_${numCol}"]`;
+                arr.push(parseInt(document.querySelector(find).textContent))
+              }
+              arr.sort((x,y) => x-y);
+              console.log(arr)
+              for (let row=0;row<rows;row++) {
+                  const find2 = `td[id="${row}_${numCol}"]`;
+                  const td = document.querySelector(find2);
+                  td.textContent = arr[row]
+              }
+            }))
         }
         button.addEventListener('click', createGrip);
         window.addEventListener('scroll', view);
+        document.addEventListener('DOMNodeInserted',sortCol);
     </script>
 </body>
 </html>
