@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+     <select name="mode" id="mode">
+         <option value="modeA">Mode A</option>
+         <option value="modeB">Mode B</option>
+     </select>
+    <canvas id="canvas" height="600" width="600" style="border: 1px solid #000;"></canvas>
+    <script>
+        const canvas = document.querySelector('#canvas');
+        const ctx = canvas.getContext('2d');
+        const mode = document.querySelector('#mode');
+        
+        const box = 30;
+        let direction;
+        const snake = [];
+        snake[0] = {
+            x: 10*box,
+            y: 10*box
+        }
+        
+        let food = {
+                x: Math.floor(Math.random()*20)*box,
+                y: Math.floor(Math.random()*20)*box
+            } 
+
+        function game() {
+            ctx.clearRect(0,0,600,600)
+            ctx.fillStyle = 'yellow';
+            ctx.fillRect(food.x, food.y, box, box); 
+            // const 
+            for (let i in snake)
+             {
+              ctx.fillStyle = i==0 ? 'black':'red';
+              ctx.fillRect(snake[i].x, snake[i].y, box, box);
+              ctx.strokeStyle = 'black';
+              ctx.strokeRect(snake[i].x, snake[i].y, box, box)
+             }
+            let newHead = {
+                x: snake[0].x,
+                y: snake[0].y
+            };
+            if (direction==="LEFT") {
+                newHead.x -= box;
+                if (newHead.x+box <=0) {
+                 if (mode.value == 'modeA')
+                  clearInterval(timeGame)
+                  else {
+                      newHead.x = 600;
+                  }
+                }
+            }       
+            if (direction==="RIGHT") {
+                newHead.x += box;
+                if (newHead.x>= 600) { 
+                if (mode.value == 'modeA')
+                 clearInterval(timeGame)
+                 else {
+                     newHead.x = 0;
+                 }
+                }      
+            }   
+            if (direction==="UP") {
+                newHead.y -= box;       
+                if (newHead.y+box <=0) { 
+                 if (mode.value == 'modeA')
+                clearInterval(timeGame);
+                else {
+                    newHead.y = 600;
+                }
+                }
+            }
+            if (direction==="DOWN" ) {
+                newHead.y += box;  
+                if (newHead.y >=600) {
+                    if (mode.value == 'modeA') 
+                    clearInterval(timeGame);
+                    else {
+                        newHead.y = 0;
+                    }
+                }
+            }
+
+            for (let i=1; i<snake.length; i++){
+                if (snake[i].x == newHead.x && snake[i].y == newHead.y)
+                    clearInterval(timeGame);
+            }
+    
+            if (newHead.x == food.x && newHead.y == food.y)
+              {
+                food = {
+                 x: Math.floor(Math.random()*20)*box,
+                 y: Math.floor(Math.random()*20)*box
+                } 
+              }
+            else {
+                snake.pop();
+            }
+            snake.unshift(newHead);
+        }
+
+       let timeGame = setInterval(game, 100)
+
+        function checkDerection(e) {
+           if (e.keyCode == 37 && direction!='RIGHT')
+            direction = 'LEFT';
+           if (e.keyCode == 39 && direction!='LEFT')
+            direction = 'RIGHT';
+           if (e.keyCode == 38 && direction!='DOWN')
+            direction = 'UP';
+           if (e.keyCode == 40 && direction!='UP')
+            direction = 'DOWN';
+        }
+        document.addEventListener('keydown',(e) => checkDerection(e));
+    </script>
+</body>
+</html>
