@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <link rel="stylesheet" href="index.css">
+</head>
+<body>
+    <label for="rows">Nhập số dòng</label>
+    <input type="text" name="rows" id="rows">
+    <label for="cols">Nhập số cột</label>
+    <input type="text" name="cols" id="cols">
+    <button>Create Grip</button>
+    <div id="grip"></div>
+    
+    <script>
+        const button = document.querySelector('button');
+        const grip = document.querySelector('#grip');
+        const max = 1000;
+        const min = 1;
+        // tao grip
+        function createGrip() {
+            const rows = parseInt(document.querySelector('#rows').value);
+            const cols = parseInt(document.querySelector('#cols').value);
+            let table = '<table>';
+                table += '<tr id="first">';
+            for (let col=1; col<=cols; col++){
+                table += '<td>';
+                table += `${col}`;
+                table += '</td>'
+            }
+                table += '</tr>';
+            for (let row=0; row<rows; row++){
+                table += `<tr data-row=${row+1}>`
+             for (let col=0; col<cols; col++){
+                table += '<td>';
+                table += `${Math.round(Math.random()*(max-min))+min}`
+                table += '</td>'
+             }
+             table += '</tr>'
+        }
+          table += '</table>'
+           grip.innerHTML = table;
+           const arrRows = document.querySelectorAll('tr');    
+                for (let i=0;i<=100;i++)
+                 arrRows[i].style.opacity = '1';
+        }
+        
+        // load ifinity
+        let count = 1;
+        function view(e) {
+            const rows = document.querySelectorAll('tr');
+            if (this.scrollY>=rows[1].offsetHeight*100*count){
+                for (let j=count*100+1;j<=count*100+100;j++)
+                 rows[j].style.opacity = '1';
+                 count++;
+            }
+            console.log(count)
+            
+        }
+        button.addEventListener('click', createGrip);
+        window.addEventListener('scroll', view);
+    </script>
+</body>
+</html>
