@@ -8,7 +8,7 @@
     <link rel="stylesheet" href="index.css">
 </head>
 <body>
-    <div id="win"></div>
+ 
     <div class="caro">
         <div data-index="00" class="cell"></div>
         <div data-index="01" class="cell"></div>
@@ -20,18 +20,21 @@
         <div data-index="21" class="cell"></div>
         <div data-index="22" class="cell"></div>
         <div class="add">
-            <button>Reset</button>
+            <button id='reset'>Reset</button>
+            <div id="win"></div>
         </div>
     </div>
-    <label for="rowcol">Nhap số hàng và số cột</label>
-    <input type="text" name="rowcol" id="rowcol">
+    <label for="square">Nhap số hàng và số cột</label>
+    <input type="text"  id="square">
     <label for="numCheck">Nhập số ô liên tiếp để thằng</label>
-    <input type="text" name="numCheck" id="numCheck">
+    <input type="text"  id="numCheck">
+    <button id="create">Create</button>
+    <div id="carob"></div>
    
     <script>
         const add = document.querySelector('.add');
          const caros = document.querySelectorAll('.cell');
-         const button = document.querySelector('button')
+         const button = document.querySelector('#reset')
          const win = document.querySelector('#win');
          let i=1;
          let positionX = {};
@@ -171,10 +174,159 @@
             caros.forEach(caro => {
                 caro.textContent = '';
             })
+            win.textContent = '';
             game();
         }
          caros.forEach(caro => caro.addEventListener('click', game));     
          button.addEventListener('click', reset);
+
+         // b
+          const carob = document.querySelector('#carob');
+         const butCreate = document.querySelector('#create');
+        
+        
+          function createGrip() {
+            let square = document.querySelector('#square').value;
+            let createb = '';
+            for (let row=0;row<square;row++)
+            for (let col=0;col<square;col++)
+           {
+              createb += `<div data-index=${row}${col} class="cellb"></div>`;;
+           }
+           document.documentElement.style.setProperty('--num',square);
+           carob.innerHTML = createb;
+          }
+        //    let i=1;
+         // let positionX = {};
+         // let position0 = {};
+        //   function gameb() {
+         //   const square = document.querySelector('#square').value;
+         //   const numCheck = document.querySelector('#numCheck');
+        //    if (this.textContent) return;
+        //    if (i%2!=0) {
+        //     this.textContent = 'X';
+        //     this.style.color = 'red';
+        //     const row = this.dataset.index[0];
+        //     const col = this.dataset.index[1];
+        //     positionX[this.dataset.index] = 1;
+        //     i++;
+        //     if (checkRow(positionX, row, col, square, numCheck) || checkCol(positionX, row, col, square, numCheck) || crossLR(positionX, row, col, square, numCheck) || crossRL(positionX, row, col, square, numCheck))
+        //      {
+        //         win.textContent = 'X Win';
+        //         add.classList.add('reset');
+        //         button.style.display = 'block';
+        //      }  
+        //    }
+        //    else {
+        //     const row0 = this.dataset.index[0];
+        //     const col0 = this.dataset.index[1];
+        //        this.textContent = '0';
+        //        this.style.color = 'green';
+        //        position0[this.dataset.index] = 1;
+        //        i++;
+        //        if (checkRow(position0, row0, col0, square, numCheck) || checkCol(position0, row0, col0, square, numCheck) || crossLR(position0, row0, col0, square, numCheck) || crossRL(position0, row0, col0, square, numCheck))
+        //        {
+        //         win.textContent = '0 Win';
+        //         add.classList.add('reset');
+        //         button.style.display = 'block';
+        //      }  
+        //    }
+        // }
+        // function checkRow(maxtrix, row, col,square, num) {
+        //     let colLeft = parseInt(col) - 1;
+        //     let count = 1;
+        //     while (colLeft>=0 && maxtrix[`${row}${colLeft}`]) {
+        //         count++;
+        //         colLeft--;
+        //     }
+        //     let colRight = parseInt(col)+1;
+        //     while (colRight<=square-1 && maxtrix[`${row}${colRight}`]) {
+        //         count++;
+        //         colRight++;
+        //     }
+        //     if (count >= num)
+        //     return true;
+        //     return false;
+        // }
+        // //row
+        // function checkRow(maxtrix, row, col, square, num) {
+        //     let colLeft = parseInt(col) - 1;
+        //     let count = 1;
+        //     while (colLeft>=0 && maxtrix[`${row}${colLeft}`]) {
+        //         count++;
+        //         colLeft--;
+        //     }
+        //     let colRight = parseInt(col)+1;
+        //     while (colRight<=square-1 && maxtrix[`${row}${colRight}`]) {
+        //         count++;
+        //         colRight++;
+        //     }
+        //     if (count >= num)
+        //     return true;
+        //     return false;
+        // }
+        // //col
+        // function checkCol(maxtrix, row, col, square, num) {
+        //     let rowUp = parseInt(row) - 1;
+        //     let count = 1;
+        //     while (rowUp>=0 && maxtrix[`${rowUp}${col}`]) {
+        //         count++;
+        //         rowUp--;
+        //     }
+        //     let rowDown = parseInt(row)+1;
+        //     while (rowDown<=square-1 && maxtrix[`${rowDown}${col}`]) {
+        //         count++;
+        //         rowDown--;
+        //     }
+        //     if (count >= num)
+        //     return true;
+        //     return false;
+        // }
+
+        // // crossLR
+        // function crossLR(maxtrix, row, col, square, num) {
+        //     let colUp = parseInt(col) - 1;
+        //     let rowUp = parseInt(row) - 1;
+        //     let count = 1;
+        //     while (rowUp>=0 && colUp>=0 && maxtrix[`${rowUp}${colUp}`]) {
+        //         count++;
+        //         colUp--;
+        //         rowUp--;
+        //     }
+        //     let colDown = parseInt(col)+1;
+        //     let rowDown = parseInt(row)+1;
+        //     while (colDown<=square-1 && rowDown<=square-1 && maxtrix[`${rowDown}${colDown}`]) {
+        //         count++;
+        //         colDown++;
+        //         rowDown++;
+        //     }
+        //     if (count >= num)
+        //     return true;
+        //     return false;
+        // }
+        // // crossRL
+        // function crossRL(maxtrix, row, col, square, num) {
+        //     let colUp = parseInt(col) + 1;
+        //     let rowUp = parseInt(row) - 1;
+        //     let count = 1;
+        //     while (rowUp>=0 && colUp<=square-1 && maxtrix[`${rowUp}${colUp}`]) {
+        //         count++;
+        //         colUp++;
+        //         rowUp--;
+        //     }
+        //     let colDown = parseInt(col) - 1;
+        //     let rowDown = parseInt(row) + 1;
+        //     while (colDown>=0 && rowDown<=square-1 && maxtrix[`${rowDown}${colDown}`]) {
+        //         count++;
+        //         colDown--;
+        //         rowDown++;
+        //     }
+        //     if (count >= num)
+        //     return true;
+        //     return false;
+        // }
+        //   document.addEventListener('DOMNodeInserted', gameb);
+          butCreate.addEventListener('click', createGrip);
     </script>
 </body>
 </html>

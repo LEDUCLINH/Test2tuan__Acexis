@@ -1,6 +1,8 @@
 html, body{
 }
-
+:root {
+    --num:2;
+}
 .caro{
     display: grid;
     grid-template-columns: repeat(3,auto);
@@ -36,9 +38,26 @@ html, body{
    position: absolute;
    background: rgba(255, 255, 255, 0.445);
 }
-button {
+button#reset {
     height: 50px;
     width: 50px;
     display: none;
 }
 
+/* b */
+#carob{
+    display: inline-grid;
+    grid-template-columns: repeat(var(--num), auto);
+    height: auto;
+    width: auto;
+}
+
+.cellb {
+     height: 50px;
+    width: 50px; 
+    background: black;
+    border: 1px solid #fff;
+    text-align: center;
+    line-height: 100px;
+    font-size: 10px;
+}
